@@ -1,6 +1,12 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using ProjectHemid.Data;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +21,51 @@ builder.Services.AddDbContext<ApplicationdbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddDbContext<AuthDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("ProjectHamid")
+    .AddEntityFrameworkStores<AuthDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+
+
+    };
+});
+builder.Services.AddCors(options =>
+{
+
+    options.AddDefaultPolicy(buid =>
+    {
+        buid.AllowAnyHeader();
+        buid.AllowAnyMethod();
+        buid.AllowAnyOrigin();
+        
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,9 +75,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
-app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseHttpsRedirection();
+app.UseCors();
+
+
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
@@ -34,6 +91,10 @@ app.UseStaticFiles(new StaticFileOptions
 
     // https://Localhost:1234/Images
 });
-app.MapControllers();
 
+app.UseRouting();
+
+app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();

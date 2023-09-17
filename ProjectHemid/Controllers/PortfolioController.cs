@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectHemid.Data;
 using ProjectHemid.Interface;
 using ProjectHemid.Model.Domain;
 using ProjectHemid.Model.Dto;
 using ProjectHemid.Services;
+using System.Data;
 
 namespace ProjectHemid.Controllers
 {
@@ -19,7 +21,8 @@ namespace ProjectHemid.Controllers
 
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
+
         public async Task<IActionResult> GetAll()
         {
             var result = await _repository.GetAllAsync();
@@ -27,20 +30,22 @@ namespace ProjectHemid.Controllers
         }
 
         [HttpGet("GetById")]
+
         public async Task<IActionResult> GetById(Guid id)
         {
             var domain = await _repository.GetByIdAsync(id);
             return Ok(new PortfolioDto { File = domain.File, FileTitle = domain.FileTitle, FileName = domain.FileName });
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(Guid Id)
         {
             var domain = await _repository.DeleteAsync(Id);
             return Ok(new PortfolioDto { File = domain.File, FileName = domain.FileName, FileTitle = domain.FileTitle });
         }
 
-        [HttpPost("Create")]
+        [HttpPost("post")]
+
         public async Task<IActionResult> Create([FromForm] PortfolioDto dto)
         {
 

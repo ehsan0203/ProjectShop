@@ -5,7 +5,7 @@ namespace ProjectHemid.Data
 {
     public class ApplicationdbContext : DbContext
     {
-        public ApplicationdbContext(DbContextOptions options) : base(options)
+        public ApplicationdbContext(DbContextOptions<ApplicationdbContext> options) : base(options)
         {
         }
 

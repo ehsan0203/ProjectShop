@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectHemid.Data;
@@ -23,7 +24,8 @@ namespace ProjectHemid.Controllers
 
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
+        
         public async Task<IActionResult> GetAll()
         {
           var result= await _repository.GetAllAsync();
@@ -31,20 +33,22 @@ namespace ProjectHemid.Controllers
         }
 
         [HttpGet("GetById")]
+       
         public async Task<IActionResult> GetById(Guid id)
         {
            var domain= await _repository.GetByIdAsync(id);
             return Ok(new BlogDto { File = domain.File, FileDescription = domain.FileDescription, FileName = domain.FileName, Title = domain.Title });
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(Guid Id)
         {
             var domain =await _repository.DeleteAsync(Id);
             return Ok(new BlogDto { File=domain.File,FileDescription=domain.FileDescription,FileName=domain.FileName,Title=domain.Title});
         }
 
-        [HttpPost("Create")]
+        [HttpPost("post")]
+
         public async Task<IActionResult> Create([FromForm] BlogDto dto)
         {
 
@@ -74,7 +78,7 @@ namespace ProjectHemid.Controllers
             {
                 ModelState.AddModelError("file", "Unsupported file extension");
             }
-            if (blogdto.File.Length > 3072000)
+            if (blogdto.File.Length > 10072000)
             {
                 ModelState.AddModelError("file", "File size more than 3MB , please upload a smaller size file.");
             }
