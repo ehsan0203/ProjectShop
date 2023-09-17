@@ -1,0 +1,32 @@
+.h2 {
+    color: #da7426;
+  }
+  
+  .rounded {
+    padding-right: 2%;
+    padding-bottom: 2%;
+    max-height: 550px;
+    min-height: 550px;
+    width: 98%;
+  }
+  
+  .container2 {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .portfolio-item {
+    position: relative;
+    text-align: center;
+  }
+  
+  .caption {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 0;
+    box-sizing: border-box;
+  }
+  

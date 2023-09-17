@@ -1,0 +1,15 @@
+.image{
+    width: 100px;
+    height: 100px;
+}
+.blog{
+    max-width: 100px;
+    max-height: 100px;
+    overflow: hidden;
+}
+/* CSS برای تنظیم ارتفاع و اسکرول در ستون description */
+.description {
+    max-height: 200px; /* ارتفاع مشخص شده برای نمایش */
+    overflow-y: auto; /* افزودن نوار اسکرول در صورت نیاز */
+  }
+  

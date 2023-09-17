@@ -1,0 +1,90 @@
+<div class="row overflow-x-auto">
+    <div class="col-md-6">
+      <h1 class="text-center">Blog</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Guid</th>
+            <th scope="col">filename</th>
+            <th scope="col">title</th>
+            <th scope="col">fileDescription</th>
+            <th scope="col">Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let blog of blogs">
+            <td>{{blog.id}}</td>
+            <td>{{blog.fileName}}</td>
+            <td>{{blog.title}}</td>
+            <td><img class="image" src={{blog.filePath}} alt=""></td>
+            <td><p class="description" max-height="200px">{{blog.fileDescription}}</p></td>
+          </tr>
+        </tbody>
+      </table>
+      <form   class="mx-5" method="post" >
+        <div class="form-group ">
+          <label for="file">File Name</label>
+          <input type="text" [(ngModel)]="fileName" class="form-control" id="fileName" name="fileName">
+        </div>
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" [(ngModel)]="title" class="form-control" id="title" name="title">
+        </div>
+        <div class="form-group">
+          <label for="file">Image</label>
+          <input type="file"  class="form-control" id="file" name="file" (change)="onFileSelected($event)" accept=".jpg, .png, .jpeg">
+
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" [(ngModel)]="fileDescription" id="description" name="description"></textarea>
+        </div>
+        <button type="submit" (click)="onUploadblog()" class="btn btn-primary">Add</button>
+      </form>
+ </div>
+    <div class="col-md-6">
+      <h1 class="text-center port">Portfolio</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">FileName</th>
+            <th scope="col">FileTitle</th>
+            <th scope="col">Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let port of portfolios">
+            <td>{{port.id}}</td>
+            <td>{{port.fileName}}</td>
+            <td>{{port.fileTitle}}</td>
+            <td><img class="image" src={{port.filePath}} alt=""></td>
+          </tr>
+        </tbody>
+      </table>
+      <form    method="post" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="file">File Name</label>
+          <input type="text" [(ngModel)]="fileName" class="form-control" id="file" name="fileName">
+        </div>
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text"[(ngModel)]="fileTitle" class="form-control" id="title" name="title">
+        </div>
+        <div class="form-group">
+          <label for="image">Image</label>
+          <input type="file" (change)="onFileSelected($event)" class="form-control" id="image" name="image" accept=".jpg, .png, .jpeg">
+        </div>
+        <button type="submit" (click)="onUploadPort()" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+  </div>
+  <!-- <div>
+    <h2>آپلود تصویر</h2>
+    <input type="file" (change)="onFileSelected($event)" accept=".jpg, .png, .jpeg">
+    <input type="text" [(ngModel)]="title" placeholder="موضوع">
+    <textarea [(ngModel)]="fileDescription" placeholder="متن"></textarea>
+    <button (click)="onUpload()">آپلود</button>
+  </div>
+   -->
+  

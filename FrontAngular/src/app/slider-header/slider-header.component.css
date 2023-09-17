@@ -1,0 +1,14 @@
+a{
+    text-decoration: none;
+}
+.detail-box{
+   width: 100%;
+}
+.text-center{
+    height: 100%;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    color: aliceblue;
+    padding: 0,20px;
+}
